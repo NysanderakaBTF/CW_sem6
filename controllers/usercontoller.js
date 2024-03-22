@@ -48,7 +48,7 @@ async function login(req, res, next){
 
 async function get_one(req, res, next) {
     const {id} = req.params
-    const user = await User.findOne({_id: id}, 'role name created_at _id');
+    const user = await User.findOne({_id: id}, 'role name created_at _id email');
     res.json({user})
 }
 

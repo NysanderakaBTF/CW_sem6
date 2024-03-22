@@ -6,6 +6,7 @@ const {Post} = require("../models/post");
 
 
 async function upload_photo(req, res, next) {
+    console.log(req)
 
     const user_1 = await User.findOne({_id: req.user._id}, 'role name created_at _id');
     if(!req.user || !user_1){
@@ -29,7 +30,7 @@ async function upload_photo(req, res, next) {
 
     const img = await Photo.create({
         img: {
-            data: req.files.photo.data,
+            data: Buffer.from(req.files.photo.data).toString('base64'),
             contentType: req.files.photo.mimetype,
         },
         author: user_1._id,
@@ -61,7 +62,7 @@ async function delete_photo(req, res, next) {
         return;
     }
 
-    if( !req.user || !req.user._id.equals(image.autor) && user_1.role == 'USER' || user_1.role == 'USER' ){
+    if( !req.user || !req.user._id.equals(image.author) && user_1.role == 'USER' ){
         next(createError(403));
         return;
     }
@@ -70,12 +71,8 @@ async function delete_photo(req, res, next) {
 }
 
 async function filter_photo(req, res, next) {
-    console.log(req)
     const aaa = await Photo.find(req.body.filter).exec();
-    console.log(aaa)
     const images = await Photo.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).sort({date:-1}).exec();
-    console.log(images)
-
     res.json({images})
 }
 

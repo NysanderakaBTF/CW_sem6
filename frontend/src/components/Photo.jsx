@@ -1,30 +1,76 @@
-import React, {useState} from "react";
-import {Card, CardFooter, Image, Button} from "@nextui-org/react";
+import React, {useEffect, useState} from "react";
+import {
+    Card,
+    CardFooter,
+    Image,
+    Button,
+    Modal,
+    ModalContent,
+    ModalBody,
+    ModalHeader,
+    ModalFooter, Link
+} from "@nextui-org/react";
+import {Buffer} from "buffer/"
+import {axiosInstance} from "../middleware/jwt.js";
+import {useSelector} from "react-redux";
+import {NavLink, useNavigate} from "react-router-dom";
+export function Photo({isOpen, onOpen, onClose, id }) {
 
-export function Photo({_id, base64String,author, title  }) {
+    const [photo, setPhoto] = useState({});
+    const navigate = useNavigate()
 
-    let [imgSrc,setImgSrc] = useState('')
-//
-    let base64_to_imgsrc = Buffer.from(base64String, "base64").toString()
-//add the string to the state
-    setImgSrc(base64_to_imgsrc)
+    const author = useSelector((state)=> state.user.user.id)
+
+    useEffect(()=>{
+        axiosInstance.post('http://localhost:3000/photo/filter', {
+            filter:{_id: id},
+            limit:1,
+            skip:0
+        }).then((response) =>{
+            console.log(response.data.images)
+            setPhoto(response.data?.images.pop())
+        })
+
+    }, [id])
+
+    function deletePhoto(){
+        axiosInstance.delete(`http://localhost:3000/photo/delete/${id}`).then(r => console.log(r))
+    }
 
     return (
-        <Card
-            isFooterBlurred
-            radius="lg"
-            className="border-none"
+        <Modal
+            size={"5xl"}
+            isOpen={isOpen}
+            onClose={onClose}
         >
-            <Image
-                alt={title}
-                className="object-cover"
-                height={200}
-                src={"data:image/jpeg;base64," + imgSrc}
-                width={200}
-            />
-            <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                <p className="text-tiny text-white/80">{title} - {author}</p>
-            </CardFooter>
-        </Card>
-    );
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">{photo.title}</ModalHeader>
+                        <ModalBody>
+                            <Image  src={"data:image/jpeg;base64," + photo.img?.data} style={{maxHeight:"80vh"}}/>
+                        </ModalBody>
+                        <ModalFooter>
+
+                            <Link onClick={()=>{
+                                onClose();
+                                navigate(`/user/${photo.author}`)
+                            }}>Author</Link>
+
+
+                            { author === photo.author &&  <Button color="danger" variant="light" onPress={()=>{
+                                onClose();
+                                deletePhoto();
+                            }}>
+                                Delete
+                            </Button>}
+                            <Button color="primary" onPress={onClose}>
+                                Colse
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
+    )
 }

@@ -1,6 +1,7 @@
 const {Post} = require('../models/post')
 const User = require("../models/user");
 const createHttpError = require("http-errors");
+const {Photo} = require("../models/photos");
 
 async function createPost(req, res, next) {
     const user_1 = await User.findOne({_id: req.user._id}, 'role name created_at _id');
@@ -43,8 +44,15 @@ async function delete_post(req, res, next){
 
 
 async function findPost(req, res, next) {
-    const post = await Post.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).exec();
-    res.json(post);
+    let post = await Post.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).exec();
+    let posts_ids = post.map(obj => obj.id);
+    let post_images = await Photo.find({post_id: {$in: posts_ids}})
+    let postsWithImages = post.map(post => {
+        const a =  post_images.filter(img => img.post_id.toString() == post._id)
+        return {...post._doc, images:a};
+    });
+
+    res.json(postsWithImages);
 }
 
 module.exports = {delete_post, createPost, findPost}

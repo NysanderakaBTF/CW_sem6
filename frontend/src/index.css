@@ -5,3 +5,8 @@
 .fixList{
     height: 100vh;
 }
+
+
+#root > div > div > div > div > div.relative.w-full.flex-auto.flex-col.place-content-inherit.align-items-inherit.h-auto.break-words.text-left.overflow-y-auto.subpixel-antialiased.flex.p-0 > div.carousel > div.horizontalSlider___281Ls.carousel__slider.carousel__slider--horizontal.flex > div > div.sliderTray___-vHFQ.sliderAnimation___300FY.carousel__slider-tray.carousel__slider-tray--horizontal > div {
+    padding-bottom: 0 !important;
+}
