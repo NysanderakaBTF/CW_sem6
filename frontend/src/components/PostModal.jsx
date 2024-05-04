@@ -13,24 +13,29 @@ import React, {useState} from "react";
 import {axiosInstance} from "../middleware/jwt.js";
 import {ImageListItem} from "@mui/material";
 import {Photo} from "./Photo.jsx";
+import {useSelector} from "react-redux";
 
 export const PostModal = () => {
+
+
+    const user = useSelector((state)=>state.user.token)
 
     const [formData, setFormData] = useState({
         title: '',
         text:'',
         tags:''
     });
+
     const [postedPost, setPostedPost] = useState({});
 
     function makeAPost(){
-        var bodyFormData = new FormData();
-        console.log(formData)
-        bodyFormData.append('title', formData.title);
-        bodyFormData.append('text', formData.description);
-        bodyFormData.append('tags', formData.tags.split(' '));
-        axiosInstance.post('http://localhost:3000/post/create', bodyFormData).then(
+        axiosInstance.post('http://localhost:3000/post/create', {
+            title: formData.title,
+            text: formData.text,
+            tags:[...new Set(formData.tags.split(' '))]
+        }).then(
             (r)=>{
+                setbt1(false);
                 console.log(r);
                 setPostedPost(r.data.post);
             }
@@ -43,6 +48,7 @@ export const PostModal = () => {
 
 
     const [photos, setPhtos] = useState([]);
+    const [bt1, setbt1] = useState(true);
 
 
 
@@ -52,6 +58,14 @@ export const PostModal = () => {
             [e.target.name]: e.target.value,
         });
     };
+
+
+    function cancelCreation(){
+        axiosInstance.delete(`http://localhost:3000/post/${postedPost._id}`).then(value => console.log(value));
+        for (const i in photos) {
+            axiosInstance.delete(`http://localhost:3000/photo/delete/${i._id}`).then(value => console.log(value));
+        }
+    }
 
     const [formData1, setFormData1] = useState({
         title: '',
@@ -93,9 +107,8 @@ export const PostModal = () => {
         setFormData1({...formData1, photo:event.target.files[0]})
     }
 
-
     return (
-        <>
+        <>{ user ? <>
             <Input
                 label="Title"
                 placeholder="Post name"
@@ -123,8 +136,8 @@ export const PostModal = () => {
                 onChange={handleChange}
                 required={true}
             />
-            <Button onClick={makeAPost} >Next</Button>
-            <Button onPress={m1.onOpen} > Add Photo</Button>
+            { bt1 &&  <Button onClick={makeAPost} >Next</Button>}
+            { !bt1 && <Button onPress={m1.onOpen}>Add Photo</Button>}
 
 
             {photos.map((item) => (
@@ -145,7 +158,7 @@ export const PostModal = () => {
 
 
 
-            <Button>Cancel</Button>
+            <Button onClick={cancelCreation}>Cancel</Button>
 
 
 
@@ -217,6 +230,7 @@ export const PostModal = () => {
                 </ModalContent>
             </Modal>
 
+        </> : <h1>LOG IN FIRST</h1>}
         </>
     )
 }

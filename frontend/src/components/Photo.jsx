@@ -20,6 +20,7 @@ export function Photo({isOpen, onOpen, onClose, id }) {
     const navigate = useNavigate()
 
     const author = useSelector((state)=> state.user.user.id)
+    const urole = useSelector((state)=> state.user.user.role)
 
     useEffect(()=>{
         axiosInstance.post('http://localhost:3000/photo/filter', {
@@ -47,7 +48,7 @@ export function Photo({isOpen, onOpen, onClose, id }) {
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">{photo.title}</ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="flex items-center justify-center">
                             <Image  src={"data:image/jpeg;base64," + photo.img?.data} style={{maxHeight:"80vh"}}/>
                         </ModalBody>
                         <ModalFooter>
@@ -58,7 +59,7 @@ export function Photo({isOpen, onOpen, onClose, id }) {
                             }}>Author</Link>
 
 
-                            { author === photo.author &&  <Button color="danger" variant="light" onPress={()=>{
+                            { (author === photo.author || urole === 'ADMIN') &&  <Button color="danger" variant="light" onPress={()=>{
                                 onClose();
                                 deletePhoto();
                             }}>

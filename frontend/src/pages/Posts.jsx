@@ -48,6 +48,14 @@ export const Posts = () => {
                 value={searchTag}
                 onChange={(event) => setSearchTag(event.target.value)}
             />
+            <Button onPress={()=>{
+                setSkip(0);
+                setPhotos([]);
+                setHaha(!haha);
+                setHasMore(true);
+            }}>
+                Search
+            </Button>
             <div className="flex flex-col w-full justify-center align-baseline content-center flex-wrap">
                 {photos.map(value => (
                     <Post post_info={value} key={value._id}/>
