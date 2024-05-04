@@ -17,7 +17,7 @@ export const Post = ({post_info}) => {
 
 
     function deletePost() {
-        axiosInstance.delete(`http://localhost:3000/post/${post_info.id}`).then(
+        axiosInstance.delete(`http://127.0.0.1:3000/post/${post_info.id}`).then(
             value => console.log(value)
         )
     }

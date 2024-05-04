@@ -24,7 +24,7 @@ export const Posts = () => {
 
 
     useEffect(() => {
-        axiosInstance.post(`http://localhost:3000/post/find`, {
+        axiosInstance.post(`http://127.0.0.1:3000/post/find`, {
             filter: {$or:[{description: {$regex: searchTag}}, {title:{$regex:searchTag}},{tags:{$in:tagArray}}]},
             limit: 1,
             skip: skip

@@ -23,7 +23,7 @@ export function Photo({isOpen, onOpen, onClose, id }) {
     const urole = useSelector((state)=> state.user.user.role)
 
     useEffect(()=>{
-        axiosInstance.post('http://localhost:3000/photo/filter', {
+        axiosInstance.post('http://127.0.0.1:3000/photo/filter', {
             filter:{_id: id},
             limit:1,
             skip:0
@@ -35,7 +35,7 @@ export function Photo({isOpen, onOpen, onClose, id }) {
     }, [id])
 
     function deletePhoto(){
-        axiosInstance.delete(`http://localhost:3000/photo/delete/${id}`).then(r => console.log(r))
+        axiosInstance.delete(`http://127.0.0.1:3000/photo/delete/${id}`).then(r => console.log(r))
     }
 
     return (
