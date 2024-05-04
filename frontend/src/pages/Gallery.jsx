@@ -23,7 +23,7 @@ export const Gallery = () => {
 
 
     useEffect(() => {
-        axiosInstance.post(`http://0.0.0.0:3000/photo/filter`, {
+        axiosInstance.post(`http://45.61.149.220:3000/photo/filter`, {
             filter: {$or:[{description: {$regex: searchTag}}, {title:{$regex:searchTag}}]},
             limit: 1,
             skip: skip

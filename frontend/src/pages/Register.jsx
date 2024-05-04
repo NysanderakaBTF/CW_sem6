@@ -25,7 +25,7 @@ export const Register = () => {
         if (formData.password !== formData.password2) {
             setError('Passwords do not match');
         } else {
-            axios.post('http://0.0.0.0:3000/users/register',
+            axios.post('http://45.61.149.220:3000/users/register',
                 {
 
                     email: formData.email,

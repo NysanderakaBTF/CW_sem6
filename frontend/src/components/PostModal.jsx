@@ -29,7 +29,7 @@ export const PostModal = () => {
     const [postedPost, setPostedPost] = useState({});
 
     function makeAPost(){
-        axiosInstance.post('http://0.0.0.0:3000/post/create', {
+        axiosInstance.post('http://45.61.149.220:3000/post/create', {
             title: formData.title,
             text: formData.text,
             tags:[...new Set(formData.tags.split(' '))]
@@ -61,9 +61,9 @@ export const PostModal = () => {
 
 
     function cancelCreation(){
-        axiosInstance.delete(`http://0.0.0.0:3000/post/${postedPost._id}`).then(value => console.log(value));
+        axiosInstance.delete(`http://45.61.149.220:3000/post/${postedPost._id}`).then(value => console.log(value));
         for (const i in photos) {
-            axiosInstance.delete(`http://0.0.0.0:3000/photo/delete/${i._id}`).then(value => console.log(value));
+            axiosInstance.delete(`http://45.61.149.220:3000/photo/delete/${i._id}`).then(value => console.log(value));
         }
     }
 
@@ -84,7 +84,7 @@ export const PostModal = () => {
         bodyFormData.append('photo', formData1.photo, 'photo.jpg');
         bodyFormData.append('description', formData1.description);
         bodyFormData.append('post_id', postedPost._id.toString());
-        axiosInstance.post('http://0.0.0.0:3000/photo/upload', bodyFormData, {
+        axiosInstance.post('http://45.61.149.220:3000/photo/upload', bodyFormData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
