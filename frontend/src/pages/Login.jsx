@@ -14,7 +14,7 @@ export const Login = () => {
     const navigate = useNavigate();
 
     function login_handler( em, pass){
-        axios.post('http://127.0.0.1:3000/users/login', {
+        axios.post('http://0.0.0.0:3000/users/login', {
             "email":em,
             "password":pass
         }).then(

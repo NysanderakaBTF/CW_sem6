@@ -27,7 +27,7 @@ export default function PhotoModal({isOpen, onOpen, onOpenChange}) {
         bodyFormData.append('price', formData.price);
         bodyFormData.append('photo', formData.photo, 'photo.jpg');
         bodyFormData.append('description', formData.description);
-        axiosInstance.post('http://127.0.0.1:3000/photo/upload', bodyFormData, {
+        axiosInstance.post('http://0.0.0.0:3000/photo/upload', bodyFormData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             }

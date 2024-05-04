@@ -29,7 +29,7 @@ export const User = () => {
 
 
     useEffect(() => {
-        axiosInstance.get(`http://127.0.0.1:3000/users/${id}`).then((response) =>
+        axiosInstance.get(`http://0.0.0.0:3000/users/${id}`).then((response) =>
             setMeInfo(response.data?.user)
         )
         console.log('User fetched');
@@ -38,7 +38,7 @@ export const User = () => {
 
 
     useEffect(() => {
-        axiosInstance.post(`http://127.0.0.1:3000/photo/filter`, {
+        axiosInstance.post(`http://0.0.0.0:3000/photo/filter`, {
             filter: {author: id, $or:[{description: {$regex: searchTagPhotos}}, {title:{$regex:searchTagPhotos}}]},
             limit: 1,
             skip: skip
@@ -59,7 +59,7 @@ export const User = () => {
 
 
     useEffect(() => {
-        axiosInstance.post(`http://127.0.0.1:3000/post/find`, {
+        axiosInstance.post(`http://0.0.0.0:3000/post/find`, {
             filter: {userId: id, $or:[{text: {$regex: searchTag}}, {title:{$regex:searchTag}},{tags:{$in:searchTag.split(' ')}}]},
             limit: 1,
             skip: skip_posts
