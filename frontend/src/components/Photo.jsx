@@ -14,6 +14,7 @@ import {Buffer} from "buffer/"
 import {axiosInstance} from "../middleware/jwt.js";
 import {useSelector} from "react-redux";
 import {NavLink, useNavigate} from "react-router-dom";
+import {NotificationManager} from "react-notifications";
 export function Photo({isOpen, onOpen, onClose, id }) {
 
     const [photo, setPhoto] = useState({});
@@ -30,12 +31,14 @@ export function Photo({isOpen, onOpen, onClose, id }) {
         }).then((response) =>{
             console.log(response.data.images)
             setPhoto(response.data?.images.pop())
-        })
+        }).catch(response => NotificationManager.error(response.body))
 
     }, [id])
 
     function deletePhoto(){
-        axiosInstance.delete(`http://45.61.149.220:3000/photo/delete/${id}`).then(r => console.log(r))
+        axiosInstance.delete(`http://45.61.149.220:3000/photo/delete/${id}`)
+            .then(r => console.log(r))
+            .catch(response => NotificationManager.error(response))
     }
 
     return (

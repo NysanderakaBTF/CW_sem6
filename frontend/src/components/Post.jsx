@@ -9,6 +9,7 @@ import {ButtonBack, ButtonNext, CarouselProvider, Slide, Slider} from "pure-reac
 import {NavLink} from "react-router-dom";
 import {Chip} from "@nextui-org/react";
 import Carousel from "nuka-carousel";
+import {NotificationManager} from "react-notifications";
 
 
 export const Post = ({post_info}) => {
@@ -19,7 +20,7 @@ export const Post = ({post_info}) => {
     function deletePost() {
         axiosInstance.delete(`http://45.61.149.220:3000/post/${post_info.id}`).then(
             value => console.log(value)
-        )
+        ).catch(response => NotificationManager.error(response))
     }
 
     return (

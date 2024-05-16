@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import {axiosInstance} from "../middleware/jwt.js";
 import {useNavigate} from "react-router-dom";
+import {NotificationManager} from "react-notifications";
 
 export default function PhotoModal({isOpen, onOpen, onOpenChange}) {
     // const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -35,7 +36,7 @@ export default function PhotoModal({isOpen, onOpen, onOpenChange}) {
             (r)=>{
                 console.log(r);
             }
-        )
+        ).catch(response => NotificationManager.error(response))
     }
 
     const [formData, setFormData] = useState({

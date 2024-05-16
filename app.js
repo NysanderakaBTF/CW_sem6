@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 
 
 
-const mongoString = process.env.DATABASE_URL
+const mongoString = 'mongodb://45.61.149.220:27017/cw'
 const database = mongoose.connection
 database.on('error', (error) => {
   console.log(error)

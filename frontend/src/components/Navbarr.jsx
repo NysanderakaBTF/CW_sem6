@@ -24,8 +24,7 @@ export const Navbarr = () => {
     const menuItems = [
         {name:"Profile", path:`/user/${userId}`},
         {name:"Photos",path:"/photos"},
-        {name:"Posts", path:"/posts"},
-        {name:"Contests", path:"/contests"}
+        {name:"Posts", path:"/posts"}
     ];
     return (
         <BrowserRouter>

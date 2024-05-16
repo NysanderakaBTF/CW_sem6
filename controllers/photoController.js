@@ -27,36 +27,59 @@ async function upload_photo(req, res, next) {
         }
     }
 
-
-    const img = await Photo.create({
-        img: {
-            data: Buffer.from(req.files.photo.data).toString('base64'),
-            contentType: req.files.photo.mimetype,
-        },
-        author: user_1._id,
-        portfolioNumber: req.body.portfolioNumber,
-        price: req.body.price,
-        date: today.now(),
-        post_id: req.body.post_id,
-        title: req.body.title,
-        description: req.body.description
-    })
-    res.json({img})
+    try {
+        const img = await Photo.create({
+            img: {
+                data: Buffer.from(req.files.photo.data).toString('base64'),
+                contentType: req.files.photo.mimetype,
+            },
+            author: user_1._id,
+            portfolioNumber: req.body.portfolioNumber,
+            price: req.body.price,
+            date: today.now(),
+            post_id: req.body.post_id,
+            title: req.body.title,
+            description: req.body.description
+        })
+        res.status(201).json({img})
+    } catch (e) {
+        next(createHttpError(400));
+        return;
+    }
 }
 
 async function get_photo(req, res, next) {
     const {id} = req.params
-    const image = await Photo.findById(id).exec();
-    res.json({image})
+    try {
+        const image = await Photo.findById(id).exec();
+        if(image)
+            res.status(200).json({image})
+        else
+            next(createHttpError(404));
+    } catch (e) {
+        next(createHttpError(404));
+        return;
+    }
 }
 
 async function delete_photo(req, res, next) {
     const {id} = req.params
     console.log(id)
-    const user_1 = await User.findOne({_id: req.user._id}, 'role name created_at _id');
+
+    try {
+        const user_1 = await User.findOne({_id: req.user._id}, 'role name created_at _id');
+        if(!req.user || !user_1){
+            next(createHttpError(422));
+            return;
+        }
+    } catch {
+        next(createHttpError(422));
+        return;
+    }
+
     const image = await Photo.findById(id).exec();
-    console.log(id)
-    console.log(image)
+    // console.log(id)
+    // console.log(image)
     if (!image){
         next(createHttpError(404));
         return;
@@ -66,14 +89,24 @@ async function delete_photo(req, res, next) {
         next(createError(403));
         return;
     }
-    await Photo.deleteOne({_id: id})
-    res.status(204).json({})
+    try {
+        await Photo.deleteOne({_id: id})
+        res.status(204).json({})
+        return;
+    } catch {
+        next(createHttpError(404));
+    }
+
 }
 
 async function filter_photo(req, res, next) {
-    const aaa = await Photo.find(req.body.filter).exec();
-    const images = await Photo.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).sort({date:-1}).exec();
-    res.json({images})
+    try {
+        const images = await Photo.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).sort({date:-1}).exec();
+        res.json({images})
+        return;
+    } catch (err) {
+        next(createHttpError(400));
+    }
 }
 
 

@@ -31,7 +31,7 @@ export const User = () => {
     useEffect(() => {
         axiosInstance.get(`http://45.61.149.220:3000/users/${id}`).then((response) =>
             setMeInfo(response.data?.user)
-        )
+        ).catch(response => NotificationManager.error(response))
         console.log('User fetched');
         console.log(meInfo);
     }, [])
@@ -51,7 +51,7 @@ export const User = () => {
                 console.log(photos)
 
             }
-        })
+        }).catch(response => NotificationManager.error(response))
     }, [id, skip, haha1])
     const [posts, setPosts] = useState([]);
     const [haha, setHaha] = useState(false)
@@ -72,7 +72,7 @@ export const User = () => {
                 console.log('+++++esfwerwe+++++++')
 
             }
-        })
+        }).catch(response => NotificationManager.error(response))
     }, [id, skip_posts, haha])
 
 

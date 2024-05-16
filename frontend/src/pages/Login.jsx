@@ -6,6 +6,7 @@ import {store} from "../store/store.js";
 import {userReducer} from "../store/slices/userStore.js";
 import {Form, Navigate, Router, useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
+import {NotificationManager} from "react-notifications";
 
 export const Login = () => {
     const [email, setEmail] = useState('')
@@ -24,12 +25,12 @@ export const Login = () => {
                 }))
                 const user = jwtDecode(value.data.token)
                 dispatch(userReducer.actions.setUser(user))
-
-
                 navigate('/main')
             }
         ).catch(
-            (reason) => console.log(reason)
+            (reason) => {
+                NotificationManager.error(reason)
+            }
         )
     }
 

@@ -3,6 +3,7 @@ import { Input, Button } from '@nextui-org/react';
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {userReducer} from "../store/slices/userStore.js";
+import {NotificationManager} from "react-notifications";
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ export const Register = () => {
                 }))
             }).catch(err => {
                 setError(err.message)
+                NotificationManager.error(err)
             })
         }
     }

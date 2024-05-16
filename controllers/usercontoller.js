@@ -21,16 +21,20 @@ async function register (req, res, next){
         }else{
             let today = Date;
 
-
-            const awesome_instance = new User({
-                email, name,
-                password: getHashedPassword(password),
-                created_at:today.now(),
-                updated_at:today.now(),
-                role: 'USER' });
-            await awesome_instance.save();
-            const token = generateJwt (awesome_instance._id, email, awesome_instance.role);
-            res.json({token})
+            try {
+                const awesome_instance = new User({
+                    email, name,
+                    password: getHashedPassword(password),
+                    created_at: today.now(),
+                    updated_at: today.now(),
+                    role: 'USER'
+                });
+                await awesome_instance.save();
+                const token = generateJwt(awesome_instance._id, email, awesome_instance.role);
+                res.json({token})
+            } catch {
+                next(createError(400, 'err'))
+            }
         }
 }
 async function login(req, res, next){
@@ -85,8 +89,7 @@ async function destroy(req, res, next) {
     }
 
     await User.deleteOne({_id:id})
-    res.status(204)
-    res.json({})
+    res.status(204).json({})
 }
 
 async function make_admin(req, res, next) {

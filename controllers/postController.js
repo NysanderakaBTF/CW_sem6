@@ -11,18 +11,23 @@ async function createPost(req, res, next) {
     }
 
     const date = Date
-    const post = await Post.create({
-        userId: user_1._id,
-        title: req.body.title,
-        text: req.body.text,
-        createdAt: date.now(),
-        updatedAt: date.now(),
-        tags: req.body.tags
-    })
-    console.log(post);
+    try {
+        const post = await Post.create({
+            userId: user_1._id,
+            title: req.body.title,
+            text: req.body.text,
+            createdAt: date.now(),
+            updatedAt: date.now(),
+            tags: req.body.tags
+        })
+        res.status(200).json({post})
+    } catch {
+        next(createHttpError(400));
+    }
+    // console.log(post);
 
 
-    res.json({post})
+
 }
 
 async function delete_post(req, res, next){
@@ -37,22 +42,31 @@ async function delete_post(req, res, next){
         next(createHttpError(403));
         return;
     }
-    await Post.deleteOne({_id: post._id});
-    res.status(204);
-    res.json({})
+    try {
+        await Post.deleteOne({_id: post._id});
+        res.status(204);
+        res.json({})
+    } catch{
+        next(createHttpError(400));
+    }
+
 }
 
 
 async function findPost(req, res, next) {
-    let post = await Post.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).exec();
-    let posts_ids = post.map(obj => obj.id);
-    let post_images = await Photo.find({post_id: {$in: posts_ids}})
-    let postsWithImages = post.map(post => {
-        const a =  post_images.filter(img => img.post_id.toString() == post._id)
-        return {...post._doc, images:a};
-    });
+    try {
+        let post = await Post.find(req.body.filter).limit(req.body.limit).skip(req.body.skip).exec();
+        let posts_ids = post.map(obj => obj.id);
+        let post_images = await Photo.find({post_id: {$in: posts_ids}})
+        let postsWithImages = post.map(post => {
+            const a = post_images.filter(img => img.post_id.toString() == post._id)
+            return {...post._doc, images: a};
+        });
 
-    res.json(postsWithImages);
+        res.json(postsWithImages);
+    } catch (err) {
+        next(createHttpError(400));
+    }
 }
 
 module.exports = {delete_post, createPost, findPost}

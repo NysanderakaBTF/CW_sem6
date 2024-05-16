@@ -14,6 +14,7 @@ import {axiosInstance} from "../middleware/jwt.js";
 import {ImageListItem} from "@mui/material";
 import {Photo} from "./Photo.jsx";
 import {useSelector} from "react-redux";
+import {NotificationManager} from "react-notifications";
 
 export const PostModal = () => {
 
@@ -39,7 +40,7 @@ export const PostModal = () => {
                 console.log(r);
                 setPostedPost(r.data.post);
             }
-        )
+        ).catch(response => NotificationManager.error(response))
     }
 
     const m1 = useDisclosure({id:'1'});
@@ -61,9 +62,13 @@ export const PostModal = () => {
 
 
     function cancelCreation(){
-        axiosInstance.delete(`http://45.61.149.220:3000/post/${postedPost._id}`).then(value => console.log(value));
+        axiosInstance.delete(`http://45.61.149.220:3000/post/${postedPost._id}`)
+            .then(value => console.log(value))
+            .catch(response => NotificationManager.error(response.body));
         for (const i in photos) {
-            axiosInstance.delete(`http://45.61.149.220:3000/photo/delete/${i._id}`).then(value => console.log(value));
+            axiosInstance.delete(`http://45.61.149.220:3000/photo/delete/${i._id}`)
+                .then(value => console.log(value))
+                .catch(response => NotificationManager.error(response));
         }
     }
 
@@ -93,7 +98,7 @@ export const PostModal = () => {
                 console.log(r);
                 setPhtos([...photos, r.data.img])
             }
-        )
+        ).catch(response => NotificationManager.error(response))
     }
 
 
