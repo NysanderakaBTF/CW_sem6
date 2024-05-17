@@ -41,7 +41,7 @@ export const Login = () => {
                 <Input type="email" label="Email" placeholder="Email" onValueChange={(value) => {setEmail(value);}}/>
                 <Input type="password" label="Email" placeholder="Password"  onValueChange={(value) => {setPassword(value);}}/>
                 <Button  type="submit" label="Submit">
-                    Button
+                    Login
                 </Button>
 
             </form>
