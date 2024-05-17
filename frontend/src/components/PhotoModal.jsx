@@ -64,7 +64,7 @@ export default function PhotoModal({isOpen, onOpen, onOpenChange}) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Post photo</ModalHeader>
                             <ModalBody>
                                 <Input
                                     label="Title"

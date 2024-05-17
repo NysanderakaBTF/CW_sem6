@@ -1,7 +1,7 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
 import Logo from "../assets/Logo.jsx";
-import {BrowserRouter, Link as LLink, Route, Routes, useNavigate} from "react-router-dom";
+import {BrowserRouter, Link as LLink, Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import {Login} from "../pages/Login.jsx";
 import {Register} from "../pages/Register.jsx";
 import {Home} from "../pages/Home.jsx";
@@ -12,6 +12,7 @@ import {Gallery} from "../pages/Gallery.jsx";
 import {userReducer} from "../store/slices/userStore.js";
 import {Posts} from "../pages/Posts.jsx";
 import {PostModal} from "./PostModal.jsx";
+
 
 export const Navbarr = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -90,6 +91,7 @@ export const Navbarr = () => {
             </NavbarMenu>
         </Navbar>
             <Routes>
+                <Route exact path='/' element={ <Navigate to="/photos" /> }/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/main" element={<Home/>}/>
