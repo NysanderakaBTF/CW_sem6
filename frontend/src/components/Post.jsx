@@ -1,15 +1,12 @@
 import {Button, useDisclosure} from "@nextui-org/react";
-import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {axiosInstance} from "../middleware/jwt.js";
 
 import React from "react";
 import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image} from "@nextui-org/react";
-import {ButtonBack, ButtonNext, CarouselProvider, Slide, Slider} from "pure-react-carousel";
 import {NavLink} from "react-router-dom";
 import {Chip} from "@nextui-org/react";
 import Carousel from "nuka-carousel";
-import {NotificationManager} from "react-notifications";
 
 
 export const Post = ({post_info}) => {
@@ -20,7 +17,7 @@ export const Post = ({post_info}) => {
     function deletePost() {
         axiosInstance.delete(`http://45.61.149.220:3000/post/${post_info.id}`).then(
             value => console.log(value)
-        ).catch(response => NotificationManager.error(response))
+        ).catch(response => alert(response))
     }
 
     return (

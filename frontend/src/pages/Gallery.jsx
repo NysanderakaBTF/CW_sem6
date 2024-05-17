@@ -7,7 +7,6 @@ import {Photo} from "../components/Photo.jsx";
 import {SearchIcon} from "../assets/SearchIcon.jsx";
 import {useHasChanged} from "../hooks/useHasChanged.js";
 import {useSelector} from "react-redux";
-import {NotificationManager} from "react-notifications";
 
 export const Gallery = () => {
     const m1 = useDisclosure({id:'1'});
@@ -36,7 +35,7 @@ export const Gallery = () => {
                 // console.log('++++++++++++')
                 // console.log(photos)
             }
-        }).catch(response => NotificationManager.error(response))
+        }).catch(response => alert(response))
     }, [skip, haha])
 
     let baseSkip = 1 ;

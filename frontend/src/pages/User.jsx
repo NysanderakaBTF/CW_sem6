@@ -3,8 +3,6 @@ import {useEffect, useState} from "react";
 import {Photo} from "../components/Photo.jsx";
 import {axiosInstance} from "../middleware/jwt.js";
 import {Button, Input, Modal, Tab, Tabs, useDisclosure} from "@nextui-org/react";
-import {ThumbnailImageProps} from "react-grid-gallery";
-import {Gallery} from "react-grid-gallery";
 import {ImageList, ImageListItem} from "@mui/material";
 import {NavLink, useParams} from "react-router-dom";
 import {Post} from "../components/Post.jsx";
@@ -47,11 +45,11 @@ export const User = () => {
                 setHasMore(false);
             } else {
                 setPhotos([...photos, ...response.data.images])
-                console.log('++++++++++++')
-                console.log(photos)
+                // console.log('++++++++++++')
+                // console.log(photos)
 
             }
-        }).catch(response => NotificationManager.error(response))
+        }).catch(response => alert(response))
     }, [id, skip, haha1])
     const [posts, setPosts] = useState([]);
     const [haha, setHaha] = useState(false)
@@ -69,10 +67,10 @@ export const User = () => {
                 setHasMore(false);
             } else {
                 setPosts([...posts, ...response.data])
-                console.log('+++++esfwerwe+++++++')
+                // console.log('+++++esfwerwe+++++++')
 
             }
-        }).catch(response => NotificationManager.error(response))
+        }).catch(response => alert(response))
     }, [id, skip_posts, haha])
 
 

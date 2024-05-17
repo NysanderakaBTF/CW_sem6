@@ -4,7 +4,6 @@ import {useSelector} from "react-redux";
 import {axiosInstance} from "../middleware/jwt.js";
 import {NavLink, useNavigate} from "react-router-dom";
 import {Post} from "../components/Post.jsx";
-import {NotificationManager} from "react-notifications";
 
 export const Posts = () => {
 
@@ -36,7 +35,7 @@ export const Posts = () => {
                 setPhotos([...photos, ...response.data])
                 // console.log(photos)
             }
-        }).catch(response => NotificationManager.error(response))
+        }).catch(response => alert(response))
     }, [skip, haha])
 
 

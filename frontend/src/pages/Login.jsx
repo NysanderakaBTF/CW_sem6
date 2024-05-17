@@ -6,7 +6,6 @@ import {store} from "../store/store.js";
 import {userReducer} from "../store/slices/userStore.js";
 import {Form, Navigate, Router, useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
-import {NotificationManager} from "react-notifications";
 
 export const Login = () => {
     const [email, setEmail] = useState('')
@@ -23,15 +22,16 @@ export const Login = () => {
                 dispatch(userReducer.actions.setToken({
                     token: value.data.token
                 }))
-                const user = jwtDecode(value.data.token)
-                dispatch(userReducer.actions.setUser(user))
-                navigate('/main')
+                try {
+                    const user = jwtDecode(value.data.token)
+                    dispatch(userReducer.actions.setUser(user))
+                    navigate('/main')
+                } catch (error) {
+                    alert('Invalid user or password')
+                }
+
             }
-        ).catch(
-            (reason) => {
-                NotificationManager.error(reason)
-            }
-        )
+        ).catch(response => alert(response))
     }
 
 

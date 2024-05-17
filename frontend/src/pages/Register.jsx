@@ -3,7 +3,6 @@ import { Input, Button } from '@nextui-org/react';
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {userReducer} from "../store/slices/userStore.js";
-import {NotificationManager} from "react-notifications";
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -36,13 +35,13 @@ export const Register = () => {
                 }
             ).then(r => {
                 console.log(r);
-                dispatch(userReducer.actions.setToken({
-                    token: r.data.token
-                }))
-            }).catch(err => {
-                setError(err.message)
-                NotificationManager.error(err)
-            })
+                if(r.data.token)
+                    dispatch(userReducer.actions.setToken({
+                        token: r.data.token
+                    }))
+                else
+                    alert('Check your data')
+            }).catch(response => alert(response))
         }
     }
 

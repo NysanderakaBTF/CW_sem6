@@ -44,16 +44,30 @@ async function login(req, res, next){
         next(createError(400, 'No such user'))
         return
     }
-    const pass_comp = bcrypt.compareSync(password, user.password);
-    if(!pass_comp){next(createError(400, 'Passwords do not match')); return}
-    const token = generateJwt(user._id, user.email, user.role)
-    return res.json({token})
+    try {
+        const pass_comp = bcrypt.compareSync(password, user.password);
+        if(!pass_comp){next(createError(400, 'Passwords do not match')); return}
+        const token = generateJwt(user._id, user.email, user.role)
+        return res.json({token})
+    } catch {
+        next(createError(400, 'Invalid user or password'))
+    }
+
 }
 
 async function get_one(req, res, next) {
     const {id} = req.params
-    const user = await User.findOne({_id: id}, 'role name created_at _id email');
-    res.json({user})
+    try {
+        const user = await User.findOne({_id: id}, 'role name created_at _id email');
+        if (!user){
+            next(createError(400, 'No user found'))
+            return;
+        }
+        res.json({user})
+    } catch {
+        next(createError(400, 'No user found'))
+    }
+
 }
 
 async function get_all(req, res, next) {
