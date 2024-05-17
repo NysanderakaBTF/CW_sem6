@@ -3,8 +3,10 @@ import { Input, Button } from '@nextui-org/react';
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {userReducer} from "../store/slices/userStore.js";
+import {useNavigate} from "react-router-dom";
 
 export const Register = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         name: '',
@@ -35,10 +37,12 @@ export const Register = () => {
                 }
             ).then(r => {
                 console.log(r);
-                if(r.data.token)
+                if(r.data.token) {
                     dispatch(userReducer.actions.setToken({
                         token: r.data.token
                     }))
+                    navigate('/photos')
+                }
                 else
                     alert('Check your data')
             }).catch(response => alert(response))

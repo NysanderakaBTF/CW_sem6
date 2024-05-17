@@ -25,7 +25,7 @@ export const Login = () => {
                 try {
                     const user = jwtDecode(value.data.token)
                     dispatch(userReducer.actions.setUser(user))
-                    navigate('/main')
+                    navigate('/photos')
                 } catch (error) {
                     alert('Invalid user or password')
                 }
